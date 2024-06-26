@@ -66,7 +66,7 @@ public class Game
         setupPlayers();
 
         Turn = 0;
-        int gameTurn = 1;
+
         Gameboard.clearBoard();
 
         while (true)
@@ -165,13 +165,19 @@ public class Game
 
     public void endTurn()
     {
-        Turn = (Turn == 1) ? 0 : 1;
+        if (Turn == 1) {
+            Turn = 0;
+        }
+        else {
+            Turn = 1;
+        }
+        
     }
 
     // Check if the selected column is valid and return a message if it is not
     public bool checkValidMove(int column)
     {
-        if (!(column >= 0 && column <= Gameboard.Columns))
+        if (!(column > 0 && column <= Gameboard.Columns))
         {
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.White;
