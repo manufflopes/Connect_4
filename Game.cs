@@ -2,12 +2,11 @@
 
 public class Game
 {
-    private static List<Player> Players { get;  set; } = new List<Player>();
-    private GameBoard Gameboard { get;  set; }
+    private static List<Player> Players { get; set; } = new List<Player>();
+    private GameBoard Gameboard { get; set; }
     public static int Turn { get; private set; }
-    //private static int Winner { get; set; }
 
-    public Game( GameBoard _gameboard)
+    public Game(GameBoard _gameboard)
     {
         Gameboard = _gameboard;
     }
@@ -55,7 +54,7 @@ public class Game
             }
 
             Player player = new Player(playerName, availableColors[playerColor], playerNumber);
-            
+
             Players.Add(player);
 
             playerNumber++;
@@ -67,6 +66,7 @@ public class Game
         setupPlayers();
 
         Turn = 0;
+        int gameTurn = 1;
         Gameboard.clearBoard();
 
         while (true)
@@ -90,9 +90,9 @@ public class Game
                 if (checkValidMove(selectedColumn) && makeMove(selectedColumn))
                 {
                     string[] hasAWinner = checkWin();
+
                     if (hasAWinner.Length > 0)
                     {
-                        
 
                         Gameboard.printBoard(hasAWinner);
 
@@ -102,21 +102,47 @@ public class Game
 
                         Console.WriteLine();
                         Console.WriteLine("\n\nDo you want to play again? (Y/N)");
-                        
+
                         var playAgain = Console.ReadLine().Trim().ToLower();
+
+                        while (!playAgain.Equals("y") && !playAgain.Equals("n"))
+                        {
+                            Console.WriteLine("\n\nDo you want to play again? (Y/N)");
+                            playAgain = Console.ReadLine().Trim().ToLower();
+                        }
+
 
                         if (playAgain.Equals("y"))
                         {
                             gameReset();
                             continue;
                         }
-                        else
+                        else if (playAgain.Equals("n"))
                         {
                             Console.WriteLine("Ending game!");
-
                             break;
                         }
                     }
+
+                    if (isGameTie())
+                    {
+                        Console.WriteLine("\n\n## Game Over ##");
+                        Console.Write("\nThis is a tie!\n");
+                        Console.WriteLine("\n\nDo you want to play again? (Y/N)");
+
+                        var playAgain = Console.ReadLine().Trim().ToLower();
+
+                        if (playAgain.Equals("y"))
+                        {
+                            gameReset();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ending game!");
+                            break;
+                        }
+                    }
+
                     endTurn();
                 };
 
@@ -130,6 +156,11 @@ public class Game
                 Console.WriteLine(" is not a number");
             }
         }
+    }
+
+    public bool isGameTie()
+    {
+        return Gameboard.AvailableMoves == 0;
     }
 
     public void endTurn()
@@ -178,7 +209,7 @@ public class Game
         {
             for (int col = 0; col < Gameboard.Columns - 3; col++)
             {
-                if (Gameboard.Board[row, col] != 0 && 
+                if (Gameboard.Board[row, col] != 0 &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row, col + 1]) &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row, col + 2]) &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row, col + 3]))
@@ -210,7 +241,7 @@ public class Game
         {
             for (int col = 3; col < Gameboard.Columns; col++)
             {
-                if (Gameboard.Board[row, col] != 0 && 
+                if (Gameboard.Board[row, col] != 0 &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row + 1, col - 1]) &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row + 2, col - 2]) &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row + 3, col - 3]))
@@ -226,7 +257,7 @@ public class Game
         {
             for (int col = 0; col < Gameboard.Columns - 3; col++)
             {
-                if (Gameboard.Board[row, col] != 0 && 
+                if (Gameboard.Board[row, col] != 0 &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row + 1, col + 1]) &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row + 2, col + 2]) &&
                     Gameboard.Board[row, col].Equals(Gameboard.Board[row + 3, col + 3]))

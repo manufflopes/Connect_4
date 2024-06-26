@@ -8,7 +8,7 @@ public class GameBoard
     public int AvailableMoves { get; private set; }
 
     private Dictionary<string, ConsoleColor> activePlayers = [];
-    
+
     const string EMPTY_CELL = " ";
     const string FILLED_CELL = "#";
 
@@ -25,13 +25,12 @@ public class GameBoard
         Console.Write("  ");
         Console.BackgroundColor = ConsoleColor.White;
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write($" { AvailableMoves} ");
+        Console.Write($" {AvailableMoves} ");
         Console.ResetColor();
         Console.WriteLine(" options remaining");
     }
+
     public void printBoard(string[] highlightedCells = null)
-    // AO INVES DE PRINTAR UM ESPACO VAZIO, PRECISAMOS PRINTAR O VALOR DENTRO DO ARRAY
-    // CHECAR SE FOR VAZIO PRINTAR ESPACO, SENAO O VALOR DENTRO DO ARRAY NAQUELA POSICAO
     {
         Console.Clear();
         showRemainingMoves();
@@ -61,7 +60,6 @@ public class GameBoard
                 }
                 else
                 {
-                    //printFormattedBoardCell(Board[row, col]);
                     if (highlightedCells != null && highlightedCells.Contains($"{row}-{col}"))
                     {
                         printWinnerCells();
@@ -104,7 +102,7 @@ public class GameBoard
     public bool fillBoardCell(Player player, int column)
     {
         //Populate active players list when each player does the first move
-        if(!activePlayers.ContainsKey(player.Value.ToString()))
+        if (!activePlayers.ContainsKey(player.Value.ToString()))
         {
             activePlayers.Add(player.Value.ToString(), player.Color);
         }
